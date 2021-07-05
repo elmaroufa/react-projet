@@ -21,14 +21,33 @@ function Question(){
     const value = useContext(AppContext);
 
     let { questionAnswer } = value.state;
-    let { handleChangeQuestion, nextQuestion } = value.function;
+    let { handleChangeInput, nextQuestion } = value.function;
 
 
     return (
         <div>
-          <form noValidate autoComplete="on" onSubmit={nextQuestion} >
-            
+          <form noValidate autoComplete="on" onSubmit = { nextQuestion } >
+            <TextField
+              id="standart-basic"
+              label = { questionAnswer.question }
+              name = { questionAnswer.resumeFiledId }
+              value = { questionAnswer.answer ? questionAnswer.answer : "" }
+              onChange = { handleChangeInput }
+            />
+            <div className={classes.buttonContainer}>
+              <Button
+              type = "submit"
+              variant = "contained"
+              color = "default"
+              className = {classes.button}
+              endIcon= { <ArrowRight /> }
+              >
+                next
+              </Button>
+            </div>
           </form>
         </div>
     );
 }
+
+export default Question;
