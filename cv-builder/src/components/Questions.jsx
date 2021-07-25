@@ -5,6 +5,7 @@ import Question from "./Question";
 import AppContext from "../AppContext";
 import Resume from "./Resume";
 
+
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -14,5 +15,64 @@ const useStyles = makeStyles((theme) => ({
     },
     progresBar:{
         margin: "irem"
-    }
-}))
+    },
+    question: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "80vh",
+      },
+      question: {}
+}));
+
+function LinearProgressWithLabel(props) {
+    return (
+        <Box display="flex" alignItems="center">
+            <Box width="100%" mr={1}>
+             <LinearProgress variant="determinate" { ...props} />
+            </Box>
+            <Box minWidth={35}>
+             <Typography variant="body2" color="textSecondary">
+                 { `${Math.round(props.value)}%` }
+             </Typography>
+            </Box>
+        </Box>
+    );
+
+}
+
+function Questions() {
+    const classes = useStyles();
+
+    const [progress, setPorgress] = React.useState(0);
+
+    const value = useContext(AppContext);
+    let { questionAnswer , questions, answers } = value.state;
+
+    useEffect(() => {
+        setPorgress(
+            (answers.length / questions.length) * 100 ? (answers.length / questions.length) * 100
+            : 0
+        );
+    }, [answers]);
+    return (
+        <div>
+            { questions.length !== answers.length ?
+                (<LinearProgressWithLabel
+                    value={progress}
+                    className={classes.progress}
+                    />) : null  }
+            <div className={classes.root}>
+                    {
+                        questions.length === answers.length ?
+                        (<Resume />) :
+                        ( <div className={classes.question}> 
+                          <Question question={questionAnswer.question} />
+                        </div>)
+                    }
+            </div>
+        </div>
+    )
+}
+
+export default Questions;
